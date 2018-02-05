@@ -1,4 +1,9 @@
 from math import pi, acos, sqrt
+from decimal import Decimal, getcontext
+
+getcontext().prec = 30
+
+INFINITE_SMALL = 1e-10
 
 class Vector(object):
 
@@ -13,7 +18,7 @@ class Vector(object):
         try:
             if not coordinates:
                 raise ValueError
-            self.coordinates = tuple(coordinates)
+            self.coordinates = tuple(Decimal(x) for x in coordinates)
             self.dimension = len(self.coordinates)
 
         except ValueError:
@@ -49,7 +54,7 @@ class Vector(object):
     def nomalized(self):
         try:
             magnitude = self.magnitude()
-            return self.times_scalar(1./magnitude)
+            return self.times_scalar(Decimal(1.0)/magnitude)
 
         except ZeroDivisionError:
             raise Exception(self.CANNOT_NORMALIZE_ZERO_VECTOR_MSG)
